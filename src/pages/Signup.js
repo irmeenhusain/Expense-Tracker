@@ -1,8 +1,15 @@
-import React from 'react'
-
+import React from 'react';
+import Header from "../components/Header";
+import SignupSigninComponent from '../components/SignupSignin';
 function Signup() {
   return (
-    <div>Signup Page</div>
+    <div>
+      <Header />
+      <div className='wrapper'>
+        <SignupSigninComponent />
+      </div>
+    </div>
+    
   )
 }
 
