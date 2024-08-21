@@ -14,3 +14,14 @@
     text-align: center;
 
 }
+
+.p-login{
+    text-align: center;
+    margin:0;
+    font-size: 0.8rem;
+    font-weight: 300;
+}
+
+.p-click{
+    cursor: pointer;
+}
