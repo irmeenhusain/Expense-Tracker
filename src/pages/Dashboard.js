@@ -8,6 +8,7 @@ import { auth, db } from '../firebase';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import moment from "moment";
+import TransactionsTable from '../components/TransactionsTable';
 
 function Dashboard() {
 
@@ -16,6 +17,9 @@ function Dashboard() {
   const [transactions, setTransactions]= useState([]);
   const [isExpenseModalVisible, setIsExpenseModalVisible]= useState(false);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
+  const [income,setIncome] = useState(0);
+  const [expense, setExpense] =useState(0);
+  const [totalBalance, setTotalBalance] = useState(0);
 
   const showExpenseModal = () => {
     setIsExpenseModalVisible(true);
@@ -36,7 +40,7 @@ function Dashboard() {
   const onFinish = (values, type) => {
     const newTransaction = {
       type: type,
-      date: moment(values.date).format("YYYY-MM-DD"),
+      date: values.date.format("YYYY-MM-DD"),
       amount: parseFloat(values.amount),
       tag: values.tag,
       name: values.name, 
@@ -47,21 +51,25 @@ function Dashboard() {
     addTransaction(newTransaction);
    // calculateBalance();
   };
+  useEffect( () => {
+    calculateBalance();
+  }, [transactions]);
 
-  // const calculateBalance = () => {
-  //   let incomeTotal = 0;
-  //   let expensesTotal = 0;
+  const calculateBalance = () => {
+    let incomeTotal = 0;
+    let expensesTotal = 0;
 
-  //   transactions.forEach((transaction) => {
-  //     if(transaction.type === "income"){
-  //       incomeTotal += transaction.amount;
-  //     } else {
-  //       expensesTotal += transaction.amount;
-  //     }
-  //   } );
-  //   setIncome(incomeTotal);
-  //   setExpenses(expenseTotal);
-  // }
+    transactions.forEach((transaction) => {
+      if(transaction.type === "income"){
+        incomeTotal += transaction.amount;
+      } else {
+        expensesTotal += transaction.amount;
+      }
+    } );
+    setIncome(incomeTotal);
+    setExpense(expensesTotal);
+    setTotalBalance(incomeTotal - expensesTotal);
+  }
 
   async function addTransaction(transaction){
     try{
@@ -70,6 +78,11 @@ function Dashboard() {
         console.log("document written with ID:", docRef.id);
 
         toast.success("Transaction Added!");
+
+        let newArr = transactions;
+        newArr.push(transaction);
+        setTransactions(newArr);
+        calculateBalance();
       
     }catch(e){
       toast.error("Couldn't add transaction");
@@ -79,7 +92,7 @@ function Dashboard() {
   useEffect( () => {
     //get all docs from a collection
     fetchTransactions();
-  }, []);
+  }, [user]);
 
   async function fetchTransactions(){
     setLoading(true);
@@ -101,6 +114,9 @@ function Dashboard() {
       <Header />
       {loading ?<p>Loading..</p> :<> 
       <Cards 
+        income={income}
+        expense={expense}
+        totalBalance={totalBalance}
         showExpenseModal={showExpenseModal} 
         showIncomeModal={showIncomeModal}
       />  
@@ -114,6 +130,7 @@ function Dashboard() {
         handleIncomeCancel={handleIncomeCancel}
         onFinish={onFinish}      
       />
+      <TransactionsTable transactions={transactions} />
       </>}
     </div>
   )

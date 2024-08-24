@@ -121,7 +121,7 @@ async function createDoc(user){
     
 
   }
-
+  //login/signup using google
   function googleAuth(){
     setLoading(true);
     try{
@@ -153,6 +153,7 @@ async function createDoc(user){
   }
   return (
     <> 
+    {/* conditionally display the signup page or the login page */}
     {loginForm ? (
       <div className='signup-wrapper'>
       <h2 className='title'>

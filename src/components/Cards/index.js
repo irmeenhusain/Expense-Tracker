@@ -3,25 +3,25 @@ import "./styles.css";
 import { Card, Row} from "antd";
 import Button from "../Button";
 
-function Cards({showExpenseModal, showIncomeModal}) {
+function Cards({income, expense, totalBalance, showExpenseModal, showIncomeModal}) {
   return (
     <div>
         <Row  className='my-row' >
             <Card className='my-card' bordered={true} >
                 <h2>Current balance</h2>
-                <p>₹ 0</p>
+                <p>₹ {totalBalance}</p>
                 <Button  text="Reset balance" blue={true} />
             </Card>  
 
             <Card className='my-card' bordered={true} >
                 <h2>Total Income</h2>
-                <p>₹ 0</p>
+                <p>₹ {income}</p>
                 <Button  text="Add Income" blue={true} onClick={showIncomeModal} />
             </Card>  
 
             <Card className='my-card' bordered={true} >
                 <h2>Total Expense</h2>
-                <p>₹ 0</p>
+                <p>₹ {expense}</p>
                 <Button  text="Add Expense" blue={true} onClick={showExpenseModal} />
             </Card>   
         </Row>
