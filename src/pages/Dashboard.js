@@ -7,10 +7,10 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebase';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { toast } from 'react-toastify';
-import moment from "moment";
 import TransactionsTable from '../components/TransactionsTable';
 import Chart from '../components/Charts';
 import NoTransactions from '../components/NoTranscations';
+import Loader from '../components/Loader';
 
 function Dashboard() {
 
@@ -119,7 +119,7 @@ let sortedTransactions = transactions.sort((a,b) => {
   return (
     <div> 
       <Header />
-      {loading ?<p>Loading..</p> :<> 
+      {loading ? <Loader/> :<> 
       <Cards 
         income={income}
         expense={expense}
