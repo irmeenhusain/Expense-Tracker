@@ -1,0 +1,78 @@
+.parent{
+    width: 90%;
+    padding: 0rem 2rem;
+    display: flex; 
+    flex-direction: column;
+    margin: auto;  
+   
+} 
+.top-row{
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    width: 100%;    
+}
+.input-flex{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;  
+    width: 100%;
+    box-shadow: var(--shadow);
+    border-radius: 0.5rem;
+    padding: 0rem 0.5rem;
+    
+}
+
+.input-flex input{
+    width: 100%;
+    padding: 0.5rem;
+    border: 0;
+}
+
+.input-flex input:focus{
+    outline: none;
+}
+
+.select-input{
+    width: 30%;
+  margin-right: 10;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--shadow);
+    border-radius: 0.5rem !important;
+    padding: 0.2rem 0.5rem;
+
+
+}
+
+
+.my-table{
+   box-shadow: var(--shadow);
+   border-radius: 0.5rem !important;
+   padding: 2rem;
+   margin-bottom: 4rem;
+   width: 95%;
+   
+   
+}
+.my-table-headings{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    gap: 1.2rem;
+}
+.my-table-csv{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    
+    
+}
+#file-csv{
+    display: none;
+}
