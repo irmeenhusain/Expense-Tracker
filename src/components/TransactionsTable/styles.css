@@ -1,26 +1,25 @@
-.wrapper{
-    width: 95%;
+.parent{
+    width: 90%;
     padding: 0rem 2rem;
     display: flex; 
     flex-direction: column;
+    margin: auto;  
    
-    
-}
+} 
 .top-row{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
     align-items: center;
     margin-bottom: 1rem;
-    width: 90%;
-    
+    width: 100%;    
 }
 .input-flex{
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 0.5rem;
-    width: 80%;
+    gap: 0.5rem;  
+    width: 100%;
     box-shadow: var(--shadow);
     border-radius: 0.5rem;
     padding: 0rem 0.5rem;
@@ -38,8 +37,8 @@
 }
 
 .select-input{
-    width: 20%;
-    margin-right: 10;
+    width: 30%;
+  margin-right: 10;
     display: flex;
     align-items: center;
     box-shadow: var(--shadow);
@@ -55,7 +54,8 @@
    border-radius: 0.5rem !important;
    padding: 2rem;
    margin-bottom: 4rem;
-   width: 85%;
+   width: 95%;
+   
    
 }
 .my-table-headings{

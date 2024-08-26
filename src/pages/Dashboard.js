@@ -9,6 +9,8 @@ import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import moment from "moment";
 import TransactionsTable from '../components/TransactionsTable';
+import Chart from '../components/Charts';
+import NoTransactions from '../components/NoTranscations';
 
 function Dashboard() {
 
@@ -71,13 +73,13 @@ function Dashboard() {
     setTotalBalance(incomeTotal - expensesTotal);
   }
 
-  async function addTransaction(transaction){
+  async function addTransaction(transaction, many){
     try{
       const docRef = await addDoc(
         collection(db, `users/${user.uid}/transactions`), transaction);
         console.log("document written with ID:", docRef.id);
 
-        toast.success("Transaction Added!");
+        if(!many) toast.success("Transaction Added!");
 
         let newArr = transactions;
         newArr.push(transaction);
@@ -85,7 +87,7 @@ function Dashboard() {
         calculateBalance();
       
     }catch(e){
-      toast.error("Couldn't add transaction");
+      if(!many) toast.error("Couldn't add transaction");
     }
   }
 
@@ -109,6 +111,11 @@ function Dashboard() {
     }
     setLoading(false);
   }
+
+let sortedTransactions = transactions.sort((a,b) => {
+  return new Date(a.date) - new Date(b.date);
+})
+
   return (
     <div> 
       <Header />
@@ -120,6 +127,7 @@ function Dashboard() {
         showExpenseModal={showExpenseModal} 
         showIncomeModal={showIncomeModal}
       />  
+      {transactions.length!=0 ? <Chart sortedTransactions={sortedTransactions} /> : <NoTransactions />}
       <AddExpense 
         isExpenseModalVisible={isExpenseModalVisible}
         handleExpenseCancel={handleExpenseCancel}
@@ -130,7 +138,7 @@ function Dashboard() {
         handleIncomeCancel={handleIncomeCancel}
         onFinish={onFinish}      
       />
-      <TransactionsTable transactions={transactions} />
+      <TransactionsTable transactions={transactions} addTransaction={addTransaction} fetchTransactions={fetchTransactions} />
       </>}
     </div>
   )

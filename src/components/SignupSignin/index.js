@@ -3,7 +3,7 @@ import "./styles.css";
 import Input from '../Input';
 import Button from '../Button';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
 import {auth, doc, db, setDoc, provider} from "../../firebase";
 import { getDoc } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";

@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { Select, Table, Radio } from "antd";
 import searchImg from "../../assets/search.svg";
 import "./styles.css";
+import Papa from "papaparse";
+import { toast} from 'react-toastify';
+
 
 const { Option } = Select; // Correct way to get Option from Select
 
-function TransactionsTable({ transactions }) {
+function TransactionsTable({ transactions, addTransaction, fetchTransactions }) {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [sortKey, setSortKey] = useState("");
@@ -54,10 +57,53 @@ function TransactionsTable({ transactions }) {
       return 0;
     }
   });
+
+  function exportCSV(){
+    var csv = Papa.unparse({
+        fields: ["name", "type", "tag", "date", "amount"],
+        data: transactions,
+    });
+
+    const blob =new Blob([csv], {type: "text/csv; charset=utf-8;"});
+    const url = window.URL.createObjectURL(blob);  // Use the blob to create a URL
+    const link = document.createElement("a");  // Create an anchor tag
+    link.href = url;     // Set the href to the URL created from the blob
+    link.download = "transactions.csv";   // Set the download attribute with the desired filename
+    document.body.appendChild(link);   // Append the link to the document
+    link.click();   // Trigger a click on the link to start the download
+    document.body.removeChild(link);  // Remove the link from the document
+
+  }
     
+  function importFromCsv(event) {
+    event.preventDefault();   //this runs on the change of the file
+    try {
+      Papa.parse(event.target.files[0], {
+        header: true,
+        complete: async function (results) {
+          // Now results.data is an array of objects representing your CSV rows
+          for (const transaction of results.data) {
+            // Write each transaction to Firebase, you can use the addTransaction function here
+            console.log("Transactions", transaction);
+            const newTransaction = {
+              ...transaction,
+              amount: parseFloat(transaction.amount),
+            };
+            await addTransaction(newTransaction, true);
+          }
+        },
+      });
+      toast.success("All Transactions Added");
+      fetchTransactions();
+      event.target.files = null;
+    } catch (e) {
+      toast.error(e.message);
+    }
+  }
+
   return (
      
-    <div className='wrapper'>
+    <div className='parent'>
         <div className='top-row'>
             <div className='input-flex'>
                 <img src={searchImg} width="16" />
@@ -93,7 +139,7 @@ function TransactionsTable({ transactions }) {
                     <Radio.Button value="amount">Sort by Amount</Radio.Button>
                 </Radio.Group>
                 <div className='my-table-csv'>
-                    <button className="btn">Export to CSV</button>
+                    <button className="btn" onClick={exportCSV} >Export to CSV</button>
                     <label for='file-csv' className='btn btn-blue' >
                     Import from CSV
                     </label>
@@ -101,7 +147,9 @@ function TransactionsTable({ transactions }) {
                         id='file-csv'
                         type='file'
                         accept='.csv'
+                        onChange={importFromCsv}
                         required 
+                        style={{display: "none"}}
                     />
 
                     
