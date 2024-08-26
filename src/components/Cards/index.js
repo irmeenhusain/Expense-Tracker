@@ -8,7 +8,7 @@ function Cards({income, expense, totalBalance, showExpenseModal, showIncomeModal
     <div>
         <Row  className='my-row' >
             <Card className='my-card' bordered={true} >
-                <h2>Current balance</h2>
+                <h2>Current Balance</h2>
                 <p>₹ {totalBalance}</p>
                 <Button  text="Reset balance" blue={true} />
             </Card>  
