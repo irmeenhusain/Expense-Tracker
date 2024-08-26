@@ -1,5 +1,6 @@
 import React from 'react';
 import {Line, Pie} from "@ant-design/charts";
+import "./styles.css"
 
 
 function Chart({sortedTransactions}) {
@@ -31,25 +32,25 @@ function Chart({sortedTransactions}) {
 
   const config = {
     data: data, 
-    width: 500,
+    
     xField : "date",
     yField: "amount"
   } ;
   const spendingConfig = {
     data: finalSpendings, 
-    width: 500,
+    
     angleField: "amount",
     colorField: "tag",
   } ;
 
   return (
     <div className="charts-wrapper">
-      <div>
+      <div className="chart-container">
         <h2 style={{marginTop: 0}} >Your Analytics</h2>
         <Line {...config} />
       </div>  
-      <div>
-        <h2>Your Spendings</h2>
+      <div className="chart-container">
+        <h2 style={{marginTop: "3rem"}} >Your Spendings</h2>
         <Pie {...spendingConfig}
         />
       </div> 
